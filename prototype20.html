@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WatermarkForge - Digital Asset Protection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e);
+            color: #eee;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #00ffcc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .upload-section {
+            background: rgba(30, 30, 50, 0.6);
+            backdrop-filter: blur(5px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            border: 2px dashed #00ffcc;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-section:hover {
+            background: rgba(0, 255, 204, 0.1);
+            border-color: #00ffcc;
+        }
+
+        .watermark-selector {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .wm-option {
+            background: #2a2a3e;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .wm-option.active {
+            background: #00ffcc;
+            color: #0a0a0a;
+        }
+
+        .preview-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .preview-card {
+            background: rgba(30, 30, 50, 0.6);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .preview-box {
+            background: #1a1a2e;
+            height: 200px;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+            font-size: 4rem;
+        }
+
+        .tracking-table {
+            background: rgba(30, 30, 50, 0.6);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .track-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1fr 1fr;
+            padding: 0.75rem;
+            border-bottom: 1px solid #3a3a5e;
+            align-items: center;
+        }
+
+        .track-header {
+            background: #0a0a1a;
+            font-weight: bold;
+            color: #00ffcc;
+            border-radius: 0.5rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #00ffcc, #0099cc);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            color: #0a0a0a;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+        }
+
+        .status-found {
+            color: #ff6666;
+        }
+
+        .status-protected {
+            color: #66ff66;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🔒 WatermarkForge</div>
+        <div>Enterprise Digital Asset Protection Suite</div>
+    </div>
+    <div class="container">
+        <div class="upload-section" onclick="simulateUpload()">
+            📁 Click to Register New Asset
+            <div style="font-size: 0.8rem; margin-top: 0.5rem;">PNG, JPG, MP4 supported up to 100MB</div>
+        </div>
+
+        <div class="watermark-selector">
+            <div class="wm-option active" onclick="selectWatermark('invisible')">🌊 Invisible Digital Watermark</div>
+            <div class="wm-option" onclick="selectWatermark('forensic')">🔬 Forensic Fingerprint</div>
+            <div class="wm-option" onclick="selectWatermark('blockchain')">⛓️ Blockchain Registration</div>
+        </div>
+
+        <div class="preview-area">
+            <div class="preview-card">
+                <h3>Original Asset</h3>
+                <div class="preview-box">🏆🏀</div>
+                <div>Championship Final - Game Winning Shot</div>
+                <div style="font-size: 0.7rem; color: #888;">Uploaded: Today 10:23 AM</div>
+            </div>
+            <div class="preview-card">
+                <h3>Watermarked Version</h3>
+                <div class="preview-box">🏆🏀🔒</div>
+                <div>+ Invisible Owner ID: SPORTS-ORG-001</div>
+                <div style="font-size: 0.7rem; color: #00ffcc;">✓ Protected & Registered</div>
+            </div>
+        </div>
+
+        <div class="tracking-table">
+            <h3>🌐 Global Tracking Results</h3>
+            <div class="track-row track-header">
+                <div>Detected Location</div><div>Asset Match</div><div>Confidence</div><div>Action</div>
+            </div>
+            <div id="trackList">
+                <div class="track-row"><div>twitter.com/sportscenter</div><div>Championship Final</div><div class="status-found">98% - Unauthorized</div><div><button class="btn-outline" style="padding:0.2rem 0.8rem;" onclick="flagThis(this)">Flag</button></div></div>
+                <div class="track-row"><div>instagram.com/hoopsdaily</div><div>Game Winning Shot</div><div class="status-found">95% - No Credit</div><div><button class="btn-outline" style="padding:0.2rem 0.8rem;" onclick="flagThis(this)">Flag</button></div></div>
+                <div class="track-row"><div>facebook.com/nbafans</div><div>Full Highlight</div><div class="status-found">99% - Unauthorized</div><div><button class="btn-outline" style="padding:0.2rem 0.8rem;" onclick="flagThis(this)">Flag</button></div></div>
+                <div class="track-row"><div>youtube.com/@sportsclips</div><div>Cropped Version</div><div class="status-found">87% - Partial Match</div><div><button class="btn-outline" style="padding:0.2rem 0.8rem;" onclick="flagThis(this)">Flag</button></div></div>
+            </div>
+            <div style="margin-top: 1rem; text-align: center;">
+                <button class="btn" onclick="scanWeb()">🔄 Scan All Platforms</button>
+                <button class="btn btn-outline" onclick="generateReport()">📄 Generate Takedown Report</button>
+            </div>
+            <div id="scanStatus" style="margin-top: 1rem; font-size: 0.8rem; text-align: center; color: #00ffcc;"></div>
+        </div>
+    </div>
+
+    <script>
+        function selectWatermark(type) {
+            document.querySelectorAll('.wm-option').forEach(opt => opt.classList.remove('active'));
+            event.target.classList.add('active');
+            alert(`${type} watermarking selected. Your asset will be embedded with ${type === 'invisible' ? 'imperceptible digital signature' : type === 'forensic' ? 'forensic traceable pattern' : 'blockchain timestamp'}.`);
+        }
+
+        function simulateUpload() {
+            alert('📤 Asset uploaded! Invisible watermark applied. Asset ID: SPTS-2026-0042. Registered to blockchain.');   
+        }
+
+        function scanWeb() {
+            const statusDiv = document.getElementById('scanStatus');
+            statusDiv.innerHTML = '🔍 Scanning TikTok, Twitter, Instagram, YouTube, Facebook...';
+            
+            setTimeout(() => {
+                const newRow = document.createElement('div');
+                newRow.className = 'track-row';
+                newRow.innerHTML = `<div>tiktok.com/@sportshighlights</div><div>Goal Celebration Clip</div><div class="status-found">92% - Watermark Detected</div><div><button class="btn-outline" style="padding:0.2rem 0.8rem;" onclick="flagThis(this)">Flag</button></div>`;
+                document.getElementById('trackList').appendChild(newRow);
+                statusDiv.innerHTML = '✅ Scan complete. Found 1 new unauthorized use.';
+            }, 2000);
+        }
+
+        function flagThis(btn) {
+            btn.innerHTML = 'Reported';
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+        }
+
+        function generateReport() {
+            alert('📄 DMCA takedown report generated for 4 infringements. Ready for submission.');
+        }
+    </script>
+</body>
+</html>
